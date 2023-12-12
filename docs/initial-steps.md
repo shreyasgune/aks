@@ -6,6 +6,9 @@
 - terraform or [opentofu](https://opentofu.org/docs/intro/install/deb)
 - tgenv install [version](https://github.com/gruntwork-io/terragrunt/releases) and then do `tgenv use 0.54.0`
 - `TERRAGRUNT_TFPATH=tofu`
+- resource provider registrations
+  - Microsoft.ContainerService
+  - Microsoft.Storage
 
 <details><summary>AZURE REGIONS</summary>
 
@@ -158,7 +161,7 @@ az group create --name sgune-rg --location eastus
 `az storage account create -n sgunesa -g sgune-rg -l eastus --sku Standard_LRS`
 - you need to go to your subscription and register into `Microsoft.Storage` resource provider in order to be able to get a storage account provisioned. 
 
-### Container Create
+### Storage Container Create
 ```az storage container create \
     --account-name <storage-account> \
     --name <container> \

@@ -17,7 +17,7 @@ variable "location" {
 variable "node_count" {
   type        = number
   description = "The initial quantity of nodes for the node pool."
-  default     = 3
+  default     = 1
 }
 
 variable "msi_id" {
@@ -38,6 +38,5 @@ variable "sshkey" {
 
 variable "vm_size" {
   description = "holds vm size info, found in azure docs"
-  type = "string"
-  
+  type = string
 }
