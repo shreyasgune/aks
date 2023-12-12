@@ -7,6 +7,14 @@
 - tgenv install [version](https://github.com/gruntwork-io/terragrunt/releases) and then do `tgenv use 0.54.0`
 - `TERRAGRUNT_TFPATH=tofu`
 
+<details><summary>AZURE REGIONS</summary>
+
+```diff
+ List of available regions is 'eastasia,southeastasia,australiaeast,australiasoutheast,brazilsouth,canadacentral,canadaeast,switzerlandnorth,germanywestcentral,eastus2,eastus,centralus,northcentralus,francecentral,uksouth,ukwest,centralindia,southindia,jioindiawest,italynorth,japaneast,japanwest,koreacentral,koreasouth,northeurope,norwayeast,polandcentral,qatarcentral,swedencentral,uaenorth,westcentralus,westeurope,westus2,westus,southcentralus,westus3,southafricanorth,australiacentral,australiacentral2,israelcentral,westindia'
+```
+</details>
+
+
 ### Running Gruntplan with tofu
 <details><summary>output</summary>
 
@@ -67,4 +75,91 @@ found no differences, so no changes are needed.
 ```
 </details>
 
-### 
+### Azure login
+<details><summary>az login</summary>
+
+```diff
+A web browser has been opened at https://login.microsoftonline.com/organizations/oauth2/v2.0/authorize. Please continue the login in the web browser. If no web browser is available or if the web browser fails to open, use device code flow with `az login --use-device-code`.
+[
+  {
+    "cloudName": "AzureCloud",
+    "homeTenantId": "e53d85a4-e3d4-4de2-9adb-294f70602bcc",
+    "id": "0f8ed921-d9a8-41b0-aeca-1b4dbab56daa",
+    "isDefault": true,
+    "managedByTenants": [],
+    "name": "Azure subscription 1",
+    "state": "Enabled",
+    "tenantId": "e53d85a4-e3d4-4de2-9adb-294f70602bcc",
+    "user": {
+      "name": "sgune@outlook.com",
+      "type": "user"
+    }
+  }
+]
+```
+</details>
+
+<details><summary>az account show</summary>
+
+```diff
+{
+  "environmentName": "AzureCloud",
+  "homeTenantId": "e53d85a4-e3d4-4de2-9adb-294f70602bcc",
+  "id": "0f8ed921-d9a8-41b0-aeca-1b4dbab56daa",
+  "isDefault": true,
+  "managedByTenants": [],
+  "name": "Azure subscription 1",
+  "state": "Enabled",
+  "tenantId": "e53d85a4-e3d4-4de2-9adb-294f70602bcc",
+  "user": {
+    "name": "sgune@outlook.com",
+    "type": "user"
+  }
+}
+```
+</details>
+
+<details><summary>az account list --query</summary>
+
+```diff
+az account list --query "[?user.name=='sgune@outlook.com'].{Name:name, ID:id, Default:isDefault}" --output Table
+Name                  ID                                    Default
+--------------------  ------------------------------------  ---------
+Azure subscription 1  <sub id>  True
+```
+</details>
+
+
+### Service Principal
+- `export MSYS_NO_PATHCONV=1`
+- `az ad sp create-for-rbac --name <service_principal_name> --role Contributor --scopes /subscriptions/<subscription_id>`
+
+### Resource Group
+`az group create --name <resource-group> --location <location>` 
+<details><summary>Group Created</summary>
+
+```diff
+az group create --name sgune-rg --location eastus
+{
+  "id": "/subscriptions/0f8ed921-d9a8-41b0-aeca-1b4dbab56daa/resourceGroups/sgune-rg",
+  "location": "eastus",
+  "managedBy": null,
+  "name": "sgune-rg",
+  "properties": {
+    "provisioningState": "Succeeded"
+  },
+  "tags": null,
+  "type": "Microsoft.Resources/resourceGroups"
+}
+```
+</details>
+
+### Storage Account
+`az storage account create -n sgunesa -g sgune-rg -l eastus --sku Standard_LRS`
+- you need to go to your subscription and register into `Microsoft.Storage` resource provider in order to be able to get a storage account provisioned. 
+
+### Container Create
+```az storage container create \
+    --account-name <storage-account> \
+    --name <container> \
+    --auth-mode login```
