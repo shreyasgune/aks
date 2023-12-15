@@ -1,33 +1,3 @@
-name: CI
-on:
-  push:
-    branches: [ all ]
-jobs:
-  container-test-job:
-    runs-on: ubuntu-latest
-    container:
-      image: 
-      env:
-        NODE_ENV: development
-
-      # ports:
-      #   - 80
-      # volumes:
-      #   - my_docker_volume:/volume_mount
-      options: --cpus 1
-    steps:
-      - name: checkout
-        uses: actions/checkout@v2
-
-      - name: list contents
-        uses: ls -la
-      
-      - name: check tg version
-        uses: terragrunt --version
-
-
------------
-
 name: Run Steps in Docker Container
 
 on:
