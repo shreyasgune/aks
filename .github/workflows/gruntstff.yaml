@@ -38,5 +38,8 @@ jobs:
 
     - name: lets grunt init
       run: cd tg-root && TERRAGRUNT_DEBUG=1 terragrunt init --terragrunt-log-level debug --terragrunt-debug
+    
+    - name : lets grunt plan AKS
+      run: cd tg-root/dev/aks && TERRAGRUNT_DEBUG=1 terragrunt plan --terragrunt-log-level debug --terragrunt-debug
 
   # Add additional jobs or workflows if needed
