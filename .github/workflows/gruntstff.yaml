@@ -32,6 +32,10 @@ jobs:
     - name: whats in this dir
       run: ls -la
 
-    # Add more steps as needed
+    - name: lets get our versions
+      run: terragrunt --version && tofu --version
+
+    - name: lets grunt init
+      run: cd tg-root && TERRAGRUNT_DEBUG=1 terragrunt init --terragrunt-log-level debug --terragrunt-debug
 
   # Add additional jobs or workflows if needed
