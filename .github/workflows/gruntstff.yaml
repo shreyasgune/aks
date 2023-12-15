@@ -9,7 +9,7 @@ on:
 jobs:
   run-in-container:
     runs-on: ubuntu-latest
-
+    environment: development
     container:
       image: shreyasgune/gman-tofu:0.1
       options: --rm  # Remove the container after job execution
