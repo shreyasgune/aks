@@ -6,7 +6,7 @@ jobs:
   container-test-job:
     runs-on: ubuntu-latest
     container:
-      image: alpine/terragrunt:latest
+      image: ghcr.io/devops-infra/docker-terragrunt/docker-terragrunt:tf-1.6.5-tg-0.54.1
       env:
         NODE_ENV: development
         ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
