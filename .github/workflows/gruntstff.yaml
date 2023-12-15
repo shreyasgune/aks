@@ -27,8 +27,8 @@ jobs:
 
     - name: Run commands inside Docker container
       run: |
-      echo "GITHUB_TOKEN=$GITHUB_TOKEN"
-      echo "ARM_SUBSCRIPTION_ID=$ARM_SUBSCRIPTION_ID"
+        echo "GITHUB_TOKEN=$GITHUB_TOKEN"
+        echo "ARM_SUBSCRIPTION_ID=$ARM_SUBSCRIPTION_ID"
 
     - name: whats in this dir
       run: ls -la && printenv
