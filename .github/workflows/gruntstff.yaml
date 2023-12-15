@@ -1,0 +1,29 @@
+name: CI
+on:
+  push:
+    branches: [ all ]
+jobs:
+  container-test-job:
+    runs-on: ubuntu-latest
+    container:
+      image: alpine/terragrunt
+      env:
+        NODE_ENV: development
+        ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
+        ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
+        ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
+        ARM_CLIENT_SECRET : ${{ secrets.ARM_CLIENT_SECRET }}
+      # ports:
+      #   - 80
+      # volumes:
+      #   - my_docker_volume:/volume_mount
+      options: --cpus 1
+    steps:
+      - name: checkout
+        uses: actions/checkout@v2
+
+      - name: list contents
+        uses: ls -la
+      
+      - name: check tg version
+        uses: terragrunt --version
