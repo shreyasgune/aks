@@ -1,0 +1,4 @@
+# sadly I dont own a domain name so I can't move forward with this.
+cert-manager: #defined by either the name or alias of your dependency in Chart.yaml
+  namespace: cert-manager
+  installCRDs: true

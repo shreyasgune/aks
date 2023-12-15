@@ -165,4 +165,7 @@ az group create --name sgune-rg --location eastus
 ```az storage container create \
     --account-name <storage-account> \
     --name <container> \
-    --auth-mode login```
+    --auth-mode login``` 
+
+### Other keep-in-mind 
+- Once you do your AKS deployment, use `terragrunt output kube_config` to get the kubeconfig 
