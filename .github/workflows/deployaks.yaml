@@ -1,0 +1,42 @@
+name: Deploy AKS Cluster
+
+on:
+  workflow_dispatch:
+    inputs:
+      cluster:
+        description: 'Do you want to deploy the cluster?'     
+        required: true
+        default: no
+jobs:
+  run-in-container:
+    runs-on: ubuntu-latest
+    environment: development
+    container:
+      image: shreyasgune/gman-tofu:0.1
+      options: --rm  # Remove the container after job execution
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
+        ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
+        ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
+        ARM_CLIENT_SECRET : ${{ secrets.ARM_CLIENT_SECRET }}
+        # Add more secrets as needed
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: lets get our versions
+      run: terragrunt --version && tofu --version
+
+    - name: lets grunt init
+      run: cd tg-root && TERRAGRUNT_DEBUG=1 terragrunt init --terragrunt-log-level debug --terragrunt-debug
+    
+    - name : lets grunt deploy AKS
+      run: |
+        if [ "${{ github.event.inputs.cluster }}" == "yes" ]; then
+          cd tg-root/dev/aks && TERRAGRUNT_DEBUG=1 terragrunt apply -auto-approve --terragrunt-log-level debug --terragrunt-debug
+        else
+          echo "Sorry mate, but you didn't approve of the deployment."
+          # Add your default actions
+        fi
