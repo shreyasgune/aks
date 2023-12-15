@@ -26,12 +26,6 @@ jobs:
       uses: actions/checkout@v2
 
     - name: Run commands inside Docker container
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
-        ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
-        ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
-        ARM_CLIENT_SECRET : ${{ secrets.ARM_CLIENT_SECRET }}
       run: |
         echo "GITHUB_TOKEN=$GITHUB_TOKEN"
         echo "ARM_SUBSCRIPTION_ID=$ARM_SUBSCRIPTION_ID"
@@ -42,7 +36,7 @@ jobs:
     - name: lets get our versions
       run: terragrunt --version && tofu --version
 
-    # - name: lets grunt init
-    #   run: cd tg-root && TERRAGRUNT_DEBUG=1 terragrunt init --terragrunt-log-level debug --terragrunt-debug
+    - name: lets grunt init
+      run: cd tg-root && TERRAGRUNT_DEBUG=1 terragrunt init --terragrunt-log-level debug --terragrunt-debug
 
   # Add additional jobs or workflows if needed
