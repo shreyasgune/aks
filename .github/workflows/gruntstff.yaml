@@ -27,10 +27,8 @@ jobs:
 
     - name: Run commands inside Docker container
       run: |
-        export ARM_SUBSCRIPTION_ID=${{ secrets.ARM_SUBSCRIPTION_ID }}
-        export ARM_TENANT_ID=${{ secrets.ARM_TENANT_ID }}
-        export ARM_CLIENT_ID=${{ secrets.ARM_CLIENT_ID }}
-        export ARM_CLIENT_SECRET=${{ secrets.ARM_CLIENT_SECRET }}
+      echo "GITHUB_TOKEN=$GITHUB_TOKEN"
+      echo "ARM_SUBSCRIPTION_ID=$ARM_SUBSCRIPTION_ID"
 
     - name: whats in this dir
       run: ls -la && printenv
