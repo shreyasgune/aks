@@ -6,13 +6,10 @@ jobs:
   container-test-job:
     runs-on: ubuntu-latest
     container:
-      image: docker.io/shreyasgune/gman-tofu:0.1
+      image: 
       env:
         NODE_ENV: development
-        ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
-        ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
-        ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
-        ARM_CLIENT_SECRET : ${{ secrets.ARM_CLIENT_SECRET }}
+
       # ports:
       #   - 80
       # volumes:
@@ -27,3 +24,44 @@ jobs:
       
       - name: check tg version
         uses: terragrunt --version
+
+
+-----------
+
+name: Run Steps in Docker Container
+
+on:
+  push:
+    branches:
+      - main
+      - all
+
+jobs:
+  run-in-container:
+    runs-on: ubuntu-latest
+
+    container:
+      image: shreyasgune/gman-tofu:0.1
+      options: --rm  # Remove the container after job execution
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
+        ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
+        ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
+        ARM_CLIENT_SECRET : ${{ secrets.ARM_CLIENT_SECRET }}
+        # Add more secrets as needed
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Run commands inside Docker container
+      run: |
+        echo "Running commands inside the Docker container..."
+
+    - name: whats in this dir
+      run: ls -la
+
+    # Add more steps as needed
+
+  # Add additional jobs or workflows if needed
