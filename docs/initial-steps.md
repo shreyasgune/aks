@@ -4,6 +4,7 @@
 - tfenv
 - [tgenv](https://github.com/cunymatthieu/tgenv) 
 - terraform or [opentofu](https://opentofu.org/docs/intro/install/deb)
+- check the modules available for providers at https://github.com/opentofu/registry/tree/main/modules
 - tgenv install [version](https://github.com/gruntwork-io/terragrunt/releases) and then do `tgenv use 0.54.0`
 - `TERRAGRUNT_TFPATH=tofu`
 - resource provider registrations
@@ -169,3 +170,11 @@ az group create --name sgune-rg --location eastus
 
 ### Other keep-in-mind 
 - Once you do your AKS deployment, use `terragrunt output kube_config` to get the kubeconfig 
+- if you have az cli, you can `az aks get-credentials --resource-group sgune-rg --name sgune-aks-cluster`
+
+## for DNS Zones and cert-manager
+
+az aks update \
+    --name sgune-aks-cluster \
+    --enable-oidc-issuer \
+    --enable-workload-identity
