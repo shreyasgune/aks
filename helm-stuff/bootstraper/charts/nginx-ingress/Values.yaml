@@ -1,0 +1,13 @@
+nginx-ingress:
+  controller:
+    service:
+        annotations:
+          # Create internal LB
+          # service.beta.kubernetes.io/azure-load-balancer-internal: "true"
+          # Any other annotation can be declared here.
+        httpsPort: 443
+        https:
+          targetPort: 80
+    admissionWebhooks:
+      certManager:
+        enabled: true

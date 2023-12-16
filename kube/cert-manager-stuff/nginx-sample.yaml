@@ -30,3 +30,48 @@ spec:
       port: 80
       targetPort: 80
   type: LoadBalancer
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: nginx-ingress
+  annotations:
+    # kubernetes.io/ingress.class: "nginx"
+    cert-manager.io/cluster-issuer: "letsencrypt-azure-dns"
+spec:
+  ingressClassName: "nginx"
+  tls:
+  - hosts:
+    - home.boopablesnoot.click  # Replace with your desired domain
+    secretName: nginx-ingress-tls
+  rules:
+  - host: home.boopablesnoot.click  # Replace with your desired domain
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: nginx-service
+            port:
+              number: 80
+---
+# certificate.yaml
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: nginx-ingress-tls
+spec:
+  secretName: nginx-ingress-tls
+  privateKey:
+    rotationPolicy: Always
+  commonName: home.boopablesnoot.click
+  dnsNames:
+    - home.boopablesnoot.click
+  usages:
+    - digital signature
+    - key encipherment
+    - server auth
+  issuerRef:
+    name: letsencrypt-azure-dns
+    kind: ClusterIssuer
