@@ -17,3 +17,6 @@ spec:
           environment: AzurePublicCloud
           managedIdentity:
             clientID: 503359ab-e4b6-4327-a4b9-e2f717dab297
+    - http01:
+        ingress:
+          ingressClassName: nginx   

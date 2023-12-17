@@ -1,13 +1,44 @@
 nginx-ingress:
   controller:
     service:
+        externalTrafficPolicy: Local
         annotations:
-          # Create internal LB
-          # service.beta.kubernetes.io/azure-load-balancer-internal: "true"
-          # Any other annotation can be declared here.
-        httpsPort: 443
-        https:
-          targetPort: 80
-    admissionWebhooks:
-      certManager:
-        enabled: true
+          service.beta.kubernetes.io/azure-load-balancer-internal: "false"  # Set to "true" for internal load balancer
+          service.beta.kubernetes.io/azure-load-balancer-tcp-idle-timeout: "10"  # Adjust timeout as needed
+          service.beta.kubernetes.io/azure-load-balancer-health-probe-request-path: "/healthz"
+        type: LoadBalancer
+    data:
+      log-level: "debug" 
+  # config:
+  #   use-forwarded-headers: "true"
+  #   use-proxy-protocol: "false"
+  scope:
+    enabled: true
+    namespace: "nginx-ingress"  # Replace with the desired namespace
+  # defaultBackend:
+  #   image:
+  #     repository: "nginx"
+  #     tag: "latest"
+  rbac:
+    create: true
+  # controllerExtraArgs:
+  #   enable-ssl-passthrough: "false"  # Set to "true" for SSL Passthrough
+  # tcp:
+  #   "443": "nginx-ingress/nginx-ingress-controller:443"
+  #   "80": "nginx-ingress/nginx-ingress-controller:80"
+  udp: {}
+
+  tolerations: []
+
+  affinity: {}
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,127 @@
+# deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: helloweb
+  labels:
+    app: hello
+spec:
+  selector:
+    matchLabels:
+      app: hello
+      tier: web
+  template:
+    metadata:
+      labels:
+        app: hello
+        tier: web
+    spec:
+      containers:
+      - name: hello-app
+        # image: us-docker.pkg.dev/google-samples/containers/gke/hello-app-tls:1.0
+        image: "nginx:latest"
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 80
+      #   volumeMounts:
+      #     - name: tls
+      #       mountPath: /etc/tls
+      #       readOnly: true
+      #   env:
+      #     - name: TLS_CERT
+      #       value: /etc/tls/tls.crt
+      #     - name: TLS_KEY
+      #       value: /etc/tls/tls.key
+      # volumes:
+      # - name: tls
+      #   secret:
+      #     secretName: helloweb-ingress-tls
+---
+# service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+    name: helloweb
+spec:
+    ports:
+    - port: 8443
+      protocol: TCP
+      targetPort: 80
+    selector:
+        app: hello
+        tier: web
+    type: LoadBalancer
+---
+# certificate.yaml
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: helloweb-ingress-tls
+spec:
+  secretName: helloweb-ingress-tls
+  privateKey:
+    rotationPolicy: Always
+  # commonName: helloweb.boopablesnoot.click
+  dnsNames:
+    - helloweb.boopablesnoot.click
+    - home.boopablesnoot.click
+  usages:
+    - digital signature
+    - key encipherment
+    - server auth
+  issuerRef:
+    name: helloweb-issuer
+    kind: ClusterIssuer
+---
+# Helloweb issuer
+apiVersion: cert-manager.io/v1
+kind: ClusterIssuer
+metadata:
+  name: helloweb-issuer
+spec:
+  acme:
+    server: https://acme-v02.api.letsencrypt.org/directory
+    email: sgune@protonmail.com
+    privateKeySecretRef:
+      name: helloweb-issuer-key
+    solvers:
+    - dns01:
+        azureDNS:
+          hostedZoneName: boopablesnoot.click
+          resourceGroupName: sgune-rg
+          subscriptionID: 0f8ed921-d9a8-41b0-aeca-1b4dbab56daa
+          environment: AzurePublicCloud
+          managedIdentity:
+            clientID: 503359ab-e4b6-4327-a4b9-e2f717dab297
+    - http01:
+        ingress:
+          ingressClassName: nginx   
+
+---
+# Ingress Resource
+# ingress.yaml
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: helloapp-nginx-resource
+  annotations:
+    cert-manager.io/cluster-issuer: "helloweb-issuer"
+    # nginx.ingress.kubernetes.io/ssl-redirect: "true"
+spec:
+  ingressClassName: "nginx"
+  tls:
+  - hosts:
+    - home.boopablesnoot.click  # Replace with your desired domain
+    secretName: helloweb-ingress-tls
+  rules:
+  - host: home.boopablesnoot.click  # Replace with your desired domain
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: helloweb
+            port:
+              number: 80
+---
