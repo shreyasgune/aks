@@ -2,14 +2,14 @@
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
-  name: nginx-tls
+  name: nginx-tls2
 spec:
-  secretName: nginx-tls
+  secretName: nginx-tls2
   privateKey:
     rotationPolicy: Always
-  commonName: nginx.boopablesnoot.click
+  commonName: hq.boopablesnoot.click
   dnsNames:
-    - nginx.boopablesnoot.click
+    - hq.boopablesnoot.click
   usages:
     - digital signature
     - key encipherment
