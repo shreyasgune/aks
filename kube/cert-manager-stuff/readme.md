@@ -10,12 +10,6 @@ az aks update \
 ```
 </details>
 
-
-
-
-
-
-
 <details><summary>create identity</summary>
 
 ```diff
@@ -40,7 +34,6 @@ az identity create --resource-group sgune-rg --name "${IDENTITY_NAME}"
 }
 ```
 </details>
-
 
 
 <details><summary>Assign role</summary>
@@ -71,7 +64,6 @@ export IDENTITY_CLIENT_ID=$(az identity show --name "${IDENTITY_NAME}" --resourc
 }
 ```
 </details>
-
 
 
 <details><summary>Federated Identity</summary>
@@ -166,7 +158,8 @@ Renewal Time: 2024-02-14T20:57:56+05:30
 ```
 </details>
 
-<details><summary>Hello App Cert Check based on helloweb.boopablesnoot.click</summary>
+
+<details><summary>Hello App Cert Check based on helloweb.boopablesnoot.click (which is based on testing/hello-app.yaml)</summary>
 
 ```diff
 ~ > curl -v https://helloweb.boopablesnoot.click                                                                                                               12:52:32 PM
@@ -231,5 +224,93 @@ Hello, world!
 Protocol: HTTP/2.0!
 Hostname: helloweb-856f9bc6fd-mv6kp
 * Connection #0 to host helloweb.boopablesnoot.click left intact
+```
+</details>
+
+
+
+<details><summary>wild card cert check</summary>
+
+```diff
+~ > cmctl status certificate wildcard-az-tls                                           4s kube sgune-aks-cluster/my-app 08:32:08 AM
+Name: wildcard-az-tls
+Namespace: my-app
+Created at: 2023-12-19T08:32:05+05:30
+Conditions:
+  Ready: True, Reason: Ready, Message: Certificate is up to date and has not expired
+DNS Names:
+- *.boopablesnoot.click
+Events:  <none>
+Issuer:
+  Name: letsencrypt-azure-dns
+  Kind: ClusterIssuer
+  Conditions:
+    Ready: True, Reason: ACMEAccountRegistered, Message: The ACME account was registered with the ACME server
+  Events:  <none>
+Secret:
+  Name: wildcard-az-tls
+  Issuer Country: US
+  Issuer Organisation: Let's Encrypt
+  Issuer Common Name: R3
+  Key Usage: Digital Signature, Key Encipherment
+  Extended Key Usages: Server Authentication, Client Authentication
+  Public Key Algorithm: RSA
+  Signature Algorithm: SHA256-RSA
+  Subject Key ID: d92bedc0ddd2244601ef07a18bd66f8d6f726d1d
+  Authority Key ID: 142eb317b75856cbae500940e61faf9d8b14c2c6
+  Serial Number: 034f1b0cfd0f6f33ba624185031bfd10f4bf
+  Events:  <none>
+Not Before: 2023-12-19T07:28:54+05:30
+Not After: 2024-03-18T07:28:53+05:30
+Renewal Time: 2024-02-17T07:28:53+05:30
+No CertificateRequest found for this Certificate
+```
+</details>
+
+<details><summary>wild card cert secret inspection</summary>
+
+```diff
+~ > cmctl inspect secret wildcard-az-tls                                               4s kube sgune-aks-cluster/my-app 08:33:10 AM
+Valid for:
+        DNS Names:
+                - *.boopablesnoot.click
+        URIs: <none>
+        IP Addresses: <none>
+        Email Addresses: <none>
+        Usages:
+                - digital signature
+                - key encipherment
+                - server auth
+                - client auth
+
+Validity period:
+        Not Before: Tue, 19 Dec 2023 01:58:54 UTC
+        Not After: Mon, 18 Mar 2024 01:58:53 UTC
+
+Issued By:
+        Common Name:    R3
+        Organization:   R3
+        OrganizationalUnit:     Let's Encrypt
+        Country:        US
+
+Issued For:
+        Common Name:    *.boopablesnoot.click
+        Organization:   *.boopablesnoot.click
+        OrganizationalUnit:     <none>
+        Country:        <none>
+
+Certificate:
+        Signing Algorithm:      SHA256-RSA
+        Public Key Algorithm:   RSA
+        Serial Number:  288255121378155841233044457538745948763327
+        Fingerprints:   F2:1B:C3:4C:1F:D9:DE:8A:DD:04:75:1A:F2:DA:D4:99:0C:78:1B:4D:8A:89:2A:C4:13:14:4B:12:15:87:BC:59
+        Is a CA certificate: false
+        CRL:    <none>
+        OCSP:   http://r3.o.lencr.org
+
+Debugging:
+        Trusted by this computer:       yes
+        CRL Status:     No CRL endpoints set
+        OCSP Status:    Cannot check OCSP: error reading OCSP response: ocsp: error from server: unauthorized
 ```
 </details>

@@ -2,18 +2,18 @@
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
-  name: nginx-tls2
+  name: wildcard-az-tls2
 spec:
-  secretName: nginx-tls2
-  privateKey:
-    rotationPolicy: Always
-  commonName: hq.boopablesnoot.click
+  secretName: wildcard-az-tls2
+  # privateKey:
+  #   rotationPolicy: Always
+  commonName: "*.boopablesnoot.click"
   dnsNames:
-    - hq.boopablesnoot.click
-  usages:
-    - digital signature
-    - key encipherment
-    - server auth
+    - "*.boopablesnoot.click"
+  # usages:
+  #   - digital signature
+  #   - key encipherment
+  #   - server auth
   issuerRef:
     name: letsencrypt-azure-dns
     kind: ClusterIssuer

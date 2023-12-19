@@ -3,15 +3,18 @@ kind: Ingress
 metadata:
   name: hello-world-ingress
   annotations:
-    cert-manager.io/cluster-issuer: letsencrypt-azure-dns
+    certmanager.k8s.io/cluster-issuer: letsencrypt-azure-dns
+    kubernetes.io/ingress.allow-http: "true"
+    kubernetes.io/tls-acme: “true” #took me AGES to figure out THIS annotation
     nginx.ingress.kubernetes.io/ssl-redirect: "true"
     nginx.ingress.kubernetes.io/use-regex: "true"
     nginx.ingress.kubernetes.io/rewrite-target: /$2 #we did this so that the healthchecks against /healthz get rerouted to the path being served
 spec:
   tls:
   - hosts:
-    - hq.boopablesnoot.click
-    secretName: nginx-tls2
+    - akshello.boopablesnoot.click
+    - home.boopablesnoot.click
+    secretName: wildcard-az-tls2
   ingressClassName: nginx
   rules:
   - http:
