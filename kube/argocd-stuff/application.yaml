@@ -1,23 +1,44 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: aks-terragrunt-setup
+  name: kube-prometheus-stack
   namespace: argocd
 spec:
   destination:
     server: 'https://kubernetes.default.svc'
     namespace: kube-prometheus-stack
-  project: kube-prometheus-stack
+  project: default
   source:
     repoURL: 'https://github.com/shreyasgune/aks.git'
     targetRevision: 'terragrunt-setup'
-    path: '*/*/*/*/kube-prometheus-stack/'  # Set the path to the directory containing your manifests
+    path: 'helm-stuff/argocd-managed/kube-prometheus-stack/'  # Set the path to the directory containing your manifests
     helm:
       valueFiles:
         - Values.yaml  # Add any specific values files if needed
-    # repo:
-    #   secretName: argocd-repo-secret
   syncPolicy:
     automated:
       prune: true
       selfHeal: true
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: vault
+  namespace: vault
+spec:
+  destination:
+    server: 'https://kubernetes.default.svc'
+    namespace: vault
+  project: default
+  source:
+    repoURL: 'https://github.com/shreyasgune/aks.git'
+    targetRevision: 'terragrunt-setup'
+    path: 'helm-stuff/argocd-managed/vault/'  # Set the path to the directory containing your manifests
+    helm:
+      valueFiles:
+        - Values.yaml  # Add any specific values files if needed
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+
