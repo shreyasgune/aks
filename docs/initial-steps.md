@@ -163,18 +163,21 @@ az group create --name sgune-rg --location eastus
 - you need to go to your subscription and register into `Microsoft.Storage` resource provider in order to be able to get a storage account provisioned. 
 
 ### Storage Container Create
-```az storage container create \
+```
+az storage container create \
     --account-name <storage-account> \
     --name <container> \
-    --auth-mode login``` 
+    --auth-mode login
+``` 
 
 ### Other keep-in-mind 
 - Once you do your AKS deployment, use `terragrunt output kube_config` to get the kubeconfig 
 - if you have az cli, you can `az aks get-credentials --resource-group sgune-rg --name sgune-aks-cluster`
 
 ## for DNS Zones and cert-manager
-
+```
 az aks update \
     --name sgune-aks-cluster \
     --enable-oidc-issuer \
     --enable-workload-identity
+```

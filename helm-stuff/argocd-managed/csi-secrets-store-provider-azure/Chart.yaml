@@ -1,0 +1,11 @@
+apiVersion: v2
+name: csi-secrets-store-provider-azure
+description: A Helm chart with csi-secrets-store-provider-azure as subchart
+type: application
+version: 0.1.0
+appVersion: "0.1.0"
+dependencies:
+  - name: csi-secrets-store-provider-azure
+    version: v1.5.1
+    repository: https://azure.github.io/secrets-store-csi-driver-provider-azure/charts
+    alias: csi-secrets-store-provider-azure
