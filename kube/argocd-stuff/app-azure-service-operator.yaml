@@ -1,0 +1,21 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: azure-service-operators
+  namespace: argocd
+spec:
+  destination:
+    server: 'https://kubernetes.default.svc'
+    namespace: azure-service-operators
+  project: default
+  source:
+    repoURL: 'https://github.com/shreyasgune/aks.git'
+    targetRevision: 'terragrunt-setup'
+    path: 'helm-stuff/argocd-managed/azure-service-operators/'  # Set the path to the directory containing your manifests
+    helm:
+      valueFiles:
+        - Values.yaml  # Add any specific values files if needed
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true

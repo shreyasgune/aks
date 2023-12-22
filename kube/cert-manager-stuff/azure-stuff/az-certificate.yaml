@@ -1,0 +1,19 @@
+# certificate.yaml
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: wildcard-az-tls2
+spec:
+  secretName: wildcard-az-tls2
+  # privateKey:
+  #   rotationPolicy: Always
+  commonName: "*.boopablesnoot.click"
+  dnsNames:
+    - "*.boopablesnoot.click"
+  # usages:
+  #   - digital signature
+  #   - key encipherment
+  #   - server auth
+  issuerRef:
+    name: letsencrypt-azure-dns
+    kind: ClusterIssuer

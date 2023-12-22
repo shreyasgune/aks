@@ -1,0 +1,44 @@
+name: Run Steps in Docker Container
+
+on:
+  # Triggers the workflow on push or pull request events but only for the "main" branch
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+jobs:
+  run-in-container:
+    runs-on: ubuntu-latest
+    environment: development
+    container:
+      image: shreyasgune/gman-tofu:0.1
+      options: --rm  # Remove the container after job execution
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
+        ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
+        ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
+        ARM_CLIENT_SECRET : ${{ secrets.ARM_CLIENT_SECRET }}
+        # Add more secrets as needed
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Run commands inside Docker container
+      run: |
+        echo "GITHUB_TOKEN=$GITHUB_TOKEN"
+        echo "ARM_SUBSCRIPTION_ID=$ARM_SUBSCRIPTION_ID"
+
+    - name: whats in this dir
+      run: ls -la && printenv
+
+    - name: lets get our versions
+      run: terragrunt --version && tofu --version
+
+    - name: lets grunt init
+      run: cd tg-root && TERRAGRUNT_DEBUG=1 terragrunt init --terragrunt-log-level debug --terragrunt-debug
+    
+
+
+  # Add additional jobs or workflows if needed

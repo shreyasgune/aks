@@ -1,0 +1,4 @@
+apiVersion: v2
+name: gman-boostrapper
+description: gman-boostrapper chart
+version: 0.1.0

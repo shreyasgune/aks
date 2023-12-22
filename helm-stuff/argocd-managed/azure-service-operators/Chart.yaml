@@ -1,0 +1,11 @@
+apiVersion: v2
+name: azure-service-operator
+description: A Helm chart with azure-service-operator as subchart
+type: application
+version: 0.1.0
+appVersion: "0.1.0"
+dependencies:
+  - name: azure-service-operator
+    version: v2.5.0
+    repository: https://raw.githubusercontent.com/Azure/azure-service-operator/main/v2/charts
+    alias: azure-service-operator

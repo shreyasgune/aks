@@ -1,0 +1,22 @@
+apiVersion: cert-manager.io/v1
+kind: ClusterIssuer
+metadata:
+  name: letsencrypt-azure-dns
+spec:
+  acme:
+    server: https://acme-v02.api.letsencrypt.org/directory
+    email: sgune@protonmail.com
+    privateKeySecretRef:
+      name: letsencrypt-azure-dns-key
+    solvers:
+    - dns01:
+        azureDNS:
+          hostedZoneName: boopablesnoot.click
+          resourceGroupName: sgune-rg
+          subscriptionID: 0f8ed921-d9a8-41b0-aeca-1b4dbab56daa
+          environment: AzurePublicCloud
+          managedIdentity:
+            clientID: 503359ab-e4b6-4327-a4b9-e2f717dab297
+    # - http01:
+    #     ingress:
+    #       ingressClassName: nginx
