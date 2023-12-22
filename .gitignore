@@ -1,4 +1,4 @@
 .terragrunt-cache
 .terraform.lock.hcl
 terragrunt-debug.tfvars.json
-*/secret.yaml
+*/*/secret.yaml

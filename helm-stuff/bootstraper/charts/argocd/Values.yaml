@@ -1773,11 +1773,11 @@ argo-cd:
     ## Ref: https://argo-cd.readthedocs.io/en/stable/operator-manual/tls/#tls-certificates-used-by-argocd-server
     certificate:
       # -- Deploy a Certificate resource (requires cert-manager)
-      enabled: false
+      enabled: true
       # -- The name of the Secret that will be automatically created and managed by this Certificate resource
       secretName: argocd-server-tls
       # -- Certificate primary domain (commonName)
-      domain: argocd.example.com
+      domain: argocd.boopablesnoot.click
       # -- Certificate Subject Alternate Names (SANs)
       additionalHosts: []
       # -- The requested 'duration' (i.e. lifetime) of the certificate.
@@ -1792,15 +1792,15 @@ argo-cd:
       ## Ref: https://cert-manager.io/docs/concepts/issuer
       issuer:
         # -- Certificate issuer group. Set if using an external issuer. Eg. `cert-manager.io`
-        group: ""
+        group: "cert-manager.io"
         # -- Certificate issuer kind. Either `Issuer` or `ClusterIssuer`
-        kind: ""
+        kind: "ClusterIssuer"
         # -- Certificate issuer name. Eg. `letsencrypt`
-        name: ""
+        name: "letsnecrypt"
       # Private key of the certificate
       privateKey:
         # -- Rotation policy of private key when certificate is re-issued. Either: `Never` or `Always`
-        rotationPolicy: Never
+        rotationPolicy: Always
         # -- The private key cryptography standards (PKCS) encoding for private key. Either: `PCKS1` or `PKCS8`
         encoding: PKCS1
         # -- Algorithm used to generate certificate private key. One of: `RSA`, `Ed25519` or `ECDSA`
