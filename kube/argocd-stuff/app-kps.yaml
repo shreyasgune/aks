@@ -19,26 +19,3 @@ spec:
     automated:
       prune: true
       selfHeal: true
----
-apiVersion: argoproj.io/v1alpha1
-kind: Application
-metadata:
-  name: vault
-  namespace: vault
-spec:
-  destination:
-    server: 'https://kubernetes.default.svc'
-    namespace: vault
-  project: default
-  source:
-    repoURL: 'https://github.com/shreyasgune/aks.git'
-    targetRevision: 'terragrunt-setup'
-    path: 'helm-stuff/argocd-managed/vault/'  # Set the path to the directory containing your manifests
-    helm:
-      valueFiles:
-        - Values.yaml  # Add any specific values files if needed
-  syncPolicy:
-    automated:
-      prune: true
-      selfHeal: true
-
