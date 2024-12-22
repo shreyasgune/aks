@@ -53,7 +53,7 @@ https://hub.docker.com/repository/docker/shreyasgune/gman-tofu
 
 `shreyasgune/gman-tofu:0.1`
 
-# Coming Soon in 2024     
+# Coming Soon in 2025     
 - Azure Active Directory pod-managed identities in AKS
 - Automation of the following using OpenTofu and Terragrunt
     - Service Principals
